@@ -17,6 +17,8 @@ const char* INITIALPROMPT = "->";
 const char COMMENTCHAR = ';';
 const int TABCODE = 9; // in ASCII, may or may not be right
 
+//======= BELOW CODE IS NOTES FROM CLASS, NOT NEEDED FOR PROJECT READER CURRENTLY =======// 
+
 // struct EXPLISTREC;
 // typedef EXPLISTREC* EXPLIST;
 // enum EXPTYPE { VALEXP, VAREXP, APEXP};
@@ -104,6 +106,8 @@ const int TABCODE = 9; // in ASCII, may or may not be right
 //     numNames=i;
 //     numBuiltIns = 1; 
 // }; 
+
+//=========== END CLASS NOTES ==================== //
 
 void stripComments(char input[], int length){ 
     // changes all items with a comment on into whitespace 
