@@ -1,6 +1,7 @@
 // for the READER project, programming languages 
 #include <iostream>
 #include <stack>
+using namespace std; 
 
 typedef int NUMBER;
 typedef int NAME;
@@ -120,14 +121,22 @@ void stripComments(char input[], int length){
     }
 }; 
 
-bool areBracketsBalanced(char input[], int length) 
+bool areParenthesesBalanced(char input[], int length) 
 {
     stack<char> s;
     for (int i = 0; i < length; i++) {
         if (input[i] == '(') {
+            s.push(input[i]);
+            continue;
         }
-            
+        else if (input[i] == ')'){ 
+            if (s.empty()) { // checking to make sure we're not popping from an empty stack
+                return false;
+            }
+            s.pop();
+        }    
     }
+    return s.empty(); 
 };
 int processInput(char input[], int length) {
     // returns a 1 if parenthesis match 
