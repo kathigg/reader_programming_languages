@@ -109,12 +109,12 @@ void stripComments(char input[], int length){
     // changes all items with a comment on into whitespace 
     // ex input: ( + x ; y )
     // ex output: ( + x space space space 
+    bool seenComment = false;
     for (int i = 0; i < length; i++) {
         // looping over the input array
-        bool seenComment = false;
         if (input[i] == ';'){
             seenComment = true; 
-            input[i] = '#';
+            input[i] = ' ';
             continue; 
         }
         if (seenComment == true) {
@@ -146,7 +146,6 @@ bool areParenthesesBalanced(char input[], int length)
 };
 
 void issuePrompt(char input[], int length) {
-    stripComments(input, length); // remove comments from the input
     bool matchingParens = areParenthesesBalanced(input, length); // stores whether parentheses match or not
     if (matchingParens) {
         // if parentheses match, issue prompt 1
@@ -162,16 +161,19 @@ int main() {
     // initNames(); 
     // globalEnv = emptyEnv(); 
     char input[MAXINPUT];
-    char newLine[MAXINPUT/2]; 
+    input[0] = '\0';
+    char newLine[MAXINPUT]; 
     bool quittingtime = 0;
     std::cout << INITIALPROMPT;
     while (!quittingtime){ 
-        std::cin.getline(newLine,MAXINPUT); // as a reminder, this only stores one line, and it doesn't include the new line (stops @ new line)
+        if (!std::cin.getline(newLine, MAXINPUT)) {
+            break;
+        }
         int newLineLength = strlen(newLine); 
         int length = strlen(input); 
 
         // if the input says quit, then exit and terminate the program
-        if (strcmp(input, "quit") == 0) {
+        if (strcmp(newLine, "quit") == 0) {
             quittingtime = 1; 
             break; 
         }
@@ -179,13 +181,19 @@ int main() {
         // is the input string empty?
         if (length == 0) {
             strcpy(input, newLine); 
+            // remove comments 
+            stripComments(newLine, newLineLength);
+            length = strlen(input); 
         }
         // is the input string not empty? 
         else if (length > 0) {
             if (length + newLineLength + 2 < MAXINPUT) {
                 // concatenate the old string and new string 
+                // remove comments 
+                stripComments(newLine, newLineLength);
                 strcat(input, " "); 
                 strcat(input, newLine); 
+                length = strlen(input); 
             }
             else {
                 std::cout << "Buffer full!";
@@ -193,30 +201,31 @@ int main() {
                 quittingtime = 1; 
                 break;
         }
-
-        // if parentheses are balanced for the line, then issue the correct prompt and then clear the array
-        if (areParenthesesBalanced(input, length)) {
-            // issue the correct prompt
-            issuePrompt(input, length);
-            // clear the array
-            input[0] = '\0'; 
-            continue; 
-        }
-        // if parentheses are not balanced for the line, we won't overwrite the array
-        else if (!areParenthesesBalanced(input, length)) {
-            // issue the correct prompt
-            issuePrompt(input, length);
-            continue; 
-        }
     }
-    } 
+
+    // if parentheses are balanced for the line, then issue the correct prompt and then clear the array
+    if (areParenthesesBalanced(input, length)) {
+        // issue the correct prompt
+        issuePrompt(input, length);
+        // clear the array
+        input[length] = '#'; // per the directions, adding a # when an expression is complete 
+        input[length + 1] = '\0'; 
+
+        input[0] = '\0';  // clearing the string before the next expression 
+        continue; 
+    }
+    // if parentheses are not balanced for the line, we won't overwrite the array
+    else if (!areParenthesesBalanced(input, length)) {
+        // issue the correct prompt
+        issuePrompt(input, length);
+        continue; 
+    }
+}
+} 
 
 
 
 
-
-    } 
-        
         
         
 
