@@ -205,12 +205,13 @@ int main() {
 
     // if parentheses are balanced for the line, then issue the correct prompt and then clear the array
     if (areParenthesesBalanced(input, length)) {
+        if (length + 1 < MAXINPUT) {
+            input[length] = '#'; // per the directions, adding a # when an expression is complete 
+            input[length + 1] = '\0'; 
+        }
         // issue the correct prompt
         issuePrompt(input, length);
         // clear the array
-        input[length] = '#'; // per the directions, adding a # when an expression is complete 
-        input[length + 1] = '\0'; 
-
         input[0] = '\0';  // clearing the string before the next expression 
         continue; 
     }
@@ -231,6 +232,5 @@ int main() {
 
 
         
-
 
 
