@@ -1,5 +1,6 @@
 // for the READER project, programming languages 
 #include <iostream>
+#include <stack>
 
 typedef int NUMBER;
 typedef int NAME;
@@ -100,15 +101,40 @@ void initNames() {
 }; 
 
 void stripComments(char input[], int length){ 
-
+    // changes all items with a comment on into whitespace 
+    // ex input: ( + x ; y )
+    // ex output: ( + x space space space 
+    for (int i = 0; i < length; i++) {
+        // looping over the input array
+        bool seenComment = false;
+        if (input[i] == ';'){
+            seenComment = true; 
+        }
+        if (seenComment == true) {
+            // if we have already seen a comment, then
+            // we need to discard the rest of the array---
+            // e.g., we should erase them. 
+            // our placeholder for deleting the item will be the space.
+            input[i] = ' ';
+        }
+    }
 }; 
 
+bool areBracketsBalanced(char input[], int length) 
+{
+    stack<char> s;
+    for (int i = 0; i < length; i++) {
+        if (input[i] == '(') {
+        }
+            
+    }
+};
 int processInput(char input[], int length) {
     // returns a 1 if parenthesis match 
     // returns a 0 if parenthesis don't match
     stripComments(input, length); 
-    input[1] = 'c';
     
+
 
 };
 
@@ -119,7 +145,7 @@ int main() {
     quittingtime = 0;
     while !(quittingtime){ 
         std::cout << PROMPT;
-        std::cin.getline(input,MAXINPUT); 
+        std::cin.getline(input,MAXINPUT); // as a reminder, this only stores one line, and it doesn't include the new line (stops @ new line)
         processInput(input, (sizeof(input) / sizeof(input[0]))); 
 
 
