@@ -13,6 +13,7 @@ const int MAXNAMES = 100;
 const int MAXINPUT = 5000;
 const char* PROMPT = "-->  ";
 const char* PROMPT2 = ">  ";
+const char* INITIALPROMPT = "->"
 const char COMMENTCHAR = ';';
 const int TABCODE = 9; // in ASCII, may or may not be right
 
@@ -163,7 +164,7 @@ int main() {
     char input[MAXINPUT];
     char newLine[MAXINPUT/2]; 
     bool quittingtime = 0;
-    std::cout << PROMPT;
+    std::cout << INITIALPROMPT;
     while (!quittingtime){ 
         std::cin.getline(newLine,MAXINPUT); // as a reminder, this only stores one line, and it doesn't include the new line (stops @ new line)
         int newLineLength = strlen(newLine); 
