@@ -163,7 +163,7 @@ int main() {
     char input[MAXINPUT];
     char newLine[MAXINPUT/2]; 
     bool quittingtime = 0;
-    while ((std::cin.getline(newLine, MAXINPUT) && !quittingtime)){ 
+    while (!quittingtime){ 
         std::cout << PROMPT;
         std::cin.getline(newLine,MAXINPUT); // as a reminder, this only stores one line, and it doesn't include the new line (stops @ new line)
         int newLineLength = (sizeof(newLine) / sizeof(newLine[0]));
