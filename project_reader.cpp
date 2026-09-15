@@ -99,14 +99,29 @@ void initNames() {
     numBuiltIns = 1; 
 }; 
 
+void stripComments(char input[], int length){ 
+
+}; 
+
+int processInput(char input[], int length) {
+    // returns a 1 if parenthesis match 
+    // returns a 0 if parenthesis don't match
+    stripComments(input, length); 
+    input[1] = 'c';
+    
+
+};
+
 int main() {
     initNames(); 
     globalEnv = emptyEnv(); 
-    
+    char input[MAXINPUT];
     quittingtime = 0;
     while !(quittingtime){ 
         std::cout << PROMPT;
-        std::cin.getline(
+        std::cin.getline(input,MAXINPUT); 
+        processInput(input, (sizeof(input) / sizeof(input[0]))); 
+
 
         
 
