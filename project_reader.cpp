@@ -163,11 +163,11 @@ int main() {
     char input[MAXINPUT];
     char newLine[MAXINPUT/2]; 
     bool quittingtime = 0;
+    std::cout << PROMPT;
     while (!quittingtime){ 
-        std::cout << PROMPT;
         std::cin.getline(newLine,MAXINPUT); // as a reminder, this only stores one line, and it doesn't include the new line (stops @ new line)
-        int newLineLength = (sizeof(newLine) / sizeof(newLine[0]));
-        int length = (sizeof(input) / sizeof(input[0])); 
+        int newLineLength = strlen(newLine); 
+        int length = strlen(input); 
 
         // if the input says quit, then exit and terminate the program
         if (strcmp(input, "quit") == 0) {
@@ -188,6 +188,7 @@ int main() {
             }
             else {
                 std::cout << "Buffer full!";
+                std::cout << length; 
                 quittingtime = 1; 
                 break;
         }
