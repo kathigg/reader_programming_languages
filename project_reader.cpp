@@ -13,7 +13,7 @@ const int MAXNAMES = 100;
 const int MAXINPUT = 5000;
 const char* PROMPT = "-->  ";
 const char* PROMPT2 = ">  ";
-const char* INITIALPROMPT = "->"
+const char* INITIALPROMPT = "->";
 const char COMMENTCHAR = ';';
 const int TABCODE = 9; // in ASCII, may or may not be right
 
