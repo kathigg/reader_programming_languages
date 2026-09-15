@@ -1,0 +1,114 @@
+// for the READER project, programming languages 
+#include <iostream>
+
+typedef int NUMBER;
+typedef int NAME;
+const int NAMELENG = 20;
+const int MAXNAMES = 100;
+const int MAXINPUT = 5000;
+const char* PROMPT = "-->  ";
+const char* PROMPT2 = ">  ";
+const char COMMENTCHAR = ';';
+const int TABCODE = 9; // in ASCII, may or may not be right
+
+struct EXPLISTREC;
+typedef EXPLISTREC* EXPLIST;
+enum EXPTYPE { VALEXP, VAREXP, APEXP};
+enum EXPTYPE { VALEXP, VAREXP, APEXP };
+struct EXPREC {
+    EXPTYPE etype; // what type of expression
+    NUMBER num;
+    NAME variable; 
+};
+struct EXPLISTREC {
+    EXP head; 
+    EXPLIST tail;
+};
+struct VALUELISTREC {
+    NUMBER head; 
+    VALUELISTREC* tail;
+    typedef VALUELISTREC* VALUELIST;
+};
+struct NAMELISTREC {
+    NAME head; 
+    NAMELISTREC* tail;
+    typedef NAMELISTREC* NAMELIST;
+};
+struct ENVREC {
+    NAMELIST vars;
+    VALUELIST values;
+};
+typedef ENVREC* ENV; 
+struct FUNDEFREC {
+    NAME funname; 
+    NAMELIST formals;
+    EXP body; 
+    FUNDREC* nextfundef; 
+}; 
+typedef FUNDEFREC* FUNDEF; 
+FUNDEF fundefs; 
+ENV globalEnv; 
+EXP currentExp; 
+
+// ...
+
+EXP mkVALEXP(NUMBER n) {
+    EXP e;
+    e = new EXPREC;
+    e -> etype = VALEXP;
+    e -> num = n; 
+    return e; 
+} 
+
+// ...
+
+int lengthVL(VALUELIST vl){
+    int i = 0;
+    while (vl != 0){
+        i++; 
+        vl = vl -> tail;
+    }
+    return i; 
+}
+
+int lengthML(NAME fname) {
+    FUNDEF f;
+    f = fundefs; 
+} 
+
+// void newFunDef(NAME fname; NAMELIST nl; EXP e);
+
+// init names -- place all pre-defined names ino printNames 
+void initNames() {
+    int i = 0; 
+    fundefs = 0; 
+    printNames[i] = (char*)"loop"; i++;
+    printNames[i] = (char*)"if"; i++
+    printNames[i] = (char*)"block"; i++
+    printNames[i] = (char*)"set"; i++
+    printNames[i] = (char*)"+"; i++
+    printNames[i] = (char*)"-"; i++
+    printNames[i] = (char*)"*"; i++
+    printNames[i] = (char*)"/"; i++
+    printNames[i] = (char*)"="; i++
+    printNames[i] = (char*)"<"; i++
+    printNames[i] = (char*)">"; i++
+    printNames[i] = (char*)"print"; i++
+
+    numNames=i;
+    numBuiltIns = 1; 
+}; 
+
+int main() {
+    initNames(); 
+    globalEnv = emptyEnv(); 
+    
+    quittingtime = 0;
+    while !(quittingtime){ 
+        std::cout << PROMPT;
+        std::cin.getline(
+
+        
+
+
+
