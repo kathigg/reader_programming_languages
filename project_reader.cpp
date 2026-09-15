@@ -180,9 +180,9 @@ int main() {
 
         // is the input string empty?
         if (length == 0) {
+            stripComments(newLine, newLineLength);
             strcpy(input, newLine); 
             // remove comments 
-            stripComments(newLine, newLineLength);
             length = strlen(input); 
         }
         // is the input string not empty? 
