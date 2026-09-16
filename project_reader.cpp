@@ -19,93 +19,161 @@ const int TABCODE = 9; // in ASCII, may or may not be right
 
 //======= BELOW CODE IS NOTES FROM CLASS, NOT NEEDED FOR PROJECT READER CURRENTLY =======// 
 
-// struct EXPLISTREC;
-// typedef EXPLISTREC* EXPLIST;
-// enum EXPTYPE { VALEXP, VAREXP, APEXP};
-// enum EXPTYPE { VALEXP, VAREXP, APEXP };
-// struct EXPREC {
-//     EXPTYPE etype; // what type of expression
-//     NUMBER num;
-//     NAME variable; 
-// };
-// struct EXPLISTREC {
-//     EXP head; 
-//     EXPLIST tail;
-// };
-// struct VALUELISTREC {
-//     NUMBER head; 
-//     VALUELISTREC* tail;
-//     typedef VALUELISTREC* VALUELIST;
-// };
-// struct NAMELISTREC {
-//     NAME head; 
-//     NAMELISTREC* tail;
-//     typedef NAMELISTREC* NAMELIST;
-// };
-// struct ENVREC {
-//     NAMELIST vars;
-//     VALUELIST values;
-// };
-// typedef ENVREC* ENV; 
-// struct FUNDEFREC {
-//     NAME funname; 
-//     NAMELIST formals;
-//     EXP body; 
-//     FUNDREC* nextfundef; 
-// }; 
-// typedef FUNDEFREC* FUNDEF; 
-// FUNDEF fundefs; 
-// ENV globalEnv; 
-// EXP currentExp; 
+struct EXPLISTREC;
+typedef EXPLISTREC* EXPLIST;
+enum EXPTYPE { VALEXP, VAREXP, APEXP};
+enum EXPTYPE { VALEXP, VAREXP, APEXP };
+struct EXPREC {
+    EXPTYPE etype; // what type of expression
+    NUMBER num;
+    NAME variable; 
+ };
+struct EXPLISTREC {
+    EXP head; 
+    EXPLIST tail;
+};
+ struct VALUELISTREC {
+     NUMBER head; 
+     VALUELISTREC* tail;
+     typedef VALUELISTREC* VALUELIST;
+ };
+ struct NAMELISTREC {
+     NAME head; 
+     NAMELISTREC* tail;
+     typedef NAMELISTREC* NAMELIST;
+ };
+ struct ENVREC {
+     NAMELIST vars;
+     VALUELIST values;
+ };
+ typedef ENVREC* ENV; 
+ struct FUNDEFREC {
+     NAME funname; 
+     NAMELIST formals;
+     EXP body; 
+     FUNDREC* nextfundef; 
+ }; 
+stuct .. FUNDEF
+ typedef FUNDEFREC* FUNDEF; 
+ FUNDEF fundefs; 
+ ENV globalEnv; 
+ EXP currentExp; 
 
-// // ...
+ // ...
 
-// EXP mkVALEXP(NUMBER n) {
-//     EXP e;
-//     e = new EXPREC;
-//     e -> etype = VALEXP;
-//     e -> num = n; 
-//     return e; 
-// } 
+ EXP mkVALEXP(NUMBER n) {
+     EXP e;
+     e = new EXPREC;
+     e -> etype = VALEXP;
+     e -> num = n; 
+     return e; 
+ } 
 
-// // ...
+ // ...
 
-// int lengthVL(VALUELIST vl){
-//     int i = 0;
-//     while (vl != 0){
-//         i++; 
-//         vl = vl -> tail;
-//     }
-//     return i; 
-// }
+ int lengthVL(VALUELIST vl){
+     int i = 0;
+     while (vl != 0){
+         i++; 
+         vl = vl -> tail;
+     }
+     return i; 
+ }
 
-// int lengthML(NAME fname) {
-//     FUNDEF f;
-//     f = fundefs; 
-// } 
+ int lengthML(NAME fname) {
+     FUNDEF f;
+     f = fundefs; 
+ } 
 
-// // void newFunDef(NAME fname; NAMELIST nl; EXP e);
 
-// // init names -- place all pre-defined names ino printNames 
-// void initNames() {
-//     int i = 0; 
-//     fundefs = 0; 
-//     printNames[i] = (char*)"loop"; i++;
-//     printNames[i] = (char*)"if"; i++
-//     printNames[i] = (char*)"block"; i++
-//     printNames[i] = (char*)"set"; i++
-//     printNames[i] = (char*)"+"; i++
-//     printNames[i] = (char*)"-"; i++
-//     printNames[i] = (char*)"*"; i++
-//     printNames[i] = (char*)"/"; i++
-//     printNames[i] = (char*)"="; i++
-//     printNames[i] = (char*)"<"; i++
-//     printNames[i] = (char*)">"; i++
-//     printNames[i] = (char*)"print"; i++
 
-//     numNames=i;
-//     numBuiltIns = 1; 
-// }; 
+ // void newFunDef(NAME fname; NAMELIST nl; EXP e);
+
+ // init names -- place all pre-defined names ino printNames 
+ void initNames() {
+     int i = 0; 
+     fundefs = 0; 
+     printNames[i] = (char*)"loop"; i++;
+     printNames[i] = (char*)"if"; i++
+     printNames[i] = (char*)"block"; i++
+     printNames[i] = (char*)"set"; i++
+     printNames[i] = (char*)"+"; i++
+     printNames[i] = (char*)"-"; i++
+     printNames[i] = (char*)"*"; i++
+     printNames[i] = (char*)"/"; i++
+     printNames[i] = (char*)"="; i++
+     printNames[i] = (char*)"<"; i++
+     printNames[i] = (char*)">"; i++
+     printNames[i] = (char*)"print"; i++
+
+     numNames=i;
+     numBuiltIns = 1; 
+}; 
+
+NAME install =(char* nm)
+{
+    int i = 0; 
+    while (i <= numNMaes) {
+        if (strcmp(nm, names[i] ) == 0)
+        break; 
+        i++; 
+    } 
+    if (i > numNames) {
+        numNames = i; 
+        printNames[i] = newchar[strlen(nm) + 1
+            strcpy(printnames[i], nm); 
+        }
+    return i; 
+
+void prName (NAME nm) 
+{ 
+    cout << printNames[nm]; 
+} 
+
+
+// INPUT
+int isDelim (char c ) 
+Return (( c== 
+
+
+NAME parseName()
+char nm[20] int eng; 
+leng = 0;
+while (( pos <= inputleng && !isDelim (uerinput[pos])) {
+    nm[leng] = useinpute[pos];
+    ++pos;
+    ++leng;
+}
+if (leng == 0) {
+    cout << "Error: expected name, instead read : " << userinput[pos] << exit(1); }
+    nm[leng] = '\0';
+    pos = skipblanks(pos)
+    return(install(nm)); 
+
+NAME parseDef()
+{
+    NAME fname; // function name 
+    NAMELIST nl; //formal parameters 
+    EXP e; // body 
+    // skip blanks, skip ( define 
+    // then you get the name fname 
+    fname = parseName;
+    // then you skip blanks again, skip the left parenthesis, grab the function 
+    // get nl by calling parseNL
+    nl = parseNL(); 
+    // then you parse the expression, skip blanks, get e
+    e = parseEXP(); 
+    // make sure you put it in the linkedlist of functions using newfundef or whatever 
+    // jump over the right parentheses ')' 
+    // parsing means the entire function has to be consumed. 
+    return (fname); 
+
+}
+// ENVIRONMENTS
+
+ENV emptyEnv() {
+    return mkEnv(0,0); 
+} 
 
 //=========== END CLASS NOTES ==================== //
 
