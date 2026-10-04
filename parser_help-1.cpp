@@ -430,7 +430,11 @@ int isDigits (int pos)
 
 int isNumber (int pos)
 {
-   error
+   if (p > inputleng
+   if (userinput[pos] >= '0' and userinput[pos] >= '0') {
+      return 1; 
+   return 0; 
+   }
 	//You do this
 }// isNumber
 
@@ -438,16 +442,26 @@ int isNumber (int pos)
 
 NUMBER parseVal()
 {
-   VALEXP val; 
-   EXPLIST el; 
-   char sign = '+';
+   int sign = 1;
+   NUMBER value = 0; 
    if (userinput[pos] == '-'){ 
-      sign = '-';
+      sign = '-1';
+      ++pos;
    }
-   { 
-      pos = skipblanks(pos);
-      if (isNumber(pos)) {
-         
+   if (pos > inputleng || userinput[pos] < '0' || 
+      userinput[pos] > '9') {
+         cout << "Error: expected digits in number, instead read : " << userinput[pos] << endl;
+         exit(1); 
+   }
+   while (pos <= inputleng && userinput[pos] >= '0' && userinput[pos] <= '9') {
+      value = value * 10 + (userinput[pos] - '0');
+      ++pos; 
+   }
+   pos = skipblanks(pos); 
+   return sign * value; 
+}
+
+
 
 
   //You do this
