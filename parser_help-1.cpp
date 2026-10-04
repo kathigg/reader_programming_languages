@@ -560,33 +560,40 @@ NAMELIST parseNL()
 
 NAME parseDef()
 {
-   NAME fname;
-   NAMELIST nl;
-   EXP e;
+   NAME fname;        // function name
+   NAMELIST nl;       // formal parameters
+   EXP e;             // body
+   // skip blanks, skip ( define
    if (userinput[pos] != '(') {
       cout << "Error: expected '(' before definition" << endl;
       exit(1);
    }
-   pos = skipblanks(pos + 1);
+   pos = skipblanks(pos + 1); // skip the outer (
    if (!matches(pos, 6, (char*)"define")) {
       cout << "Error: expected define, instead read: " << userinput[pos] << endl; 
       exit(1); 
    }
-   pos = skipblanks(pos + 6);
+   pos = skipblanks(pos + 6); // skip define and blanks
+   // then you get the name fname
    fname = parseName();
+   // then you skip blanks again, skip the left
+   // parenthesis, grab the function
    if (userinput[pos] != '(') {
       cout << "Error: expected '(' before the argument list, instead read: " << userinput[pos] << endl;
       exit(1);
    }
-   pos = skipblanks(pos + 1);
+   pos = skipblanks(pos + 1); // skip ( before the arguments
+   // get nl by calling parseNL
    nl = parseNL();
+   // then you parse the expression, skip blanks, get e
    e = parseExp();
    if (userinput[pos] != ')') {
       cout << "Error: expected ')' to end the definition, but instead read: " << userinput[pos] << endl;
       exit(1); 
    }
-   pos = skipblanks(pos + 1);
+   pos = skipblanks(pos + 1); // skipping the outer ')'
    newFunDef(fname, nl, e);
+   // parsing means the entire function has to be consumed.
    return fname;
 }// parseDef
 
