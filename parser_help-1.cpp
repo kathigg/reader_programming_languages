@@ -107,7 +107,6 @@ EXP mkVALEXP ( NUMBER n)
 EXP mkVAREXP ( NAME nm)
 {
    EXP e;
-  //You do this
     e = new EXPREC;
     e->etype = VAREXP;
     e->varble = nm;
@@ -205,7 +204,6 @@ FUNDEF fetchFun ( NAME fname)
       f = f->nextfundef;
    }
    return nullptr; // returns nullptr if no definition has the name
- //You do this
 }/* fetchFun */
 
 
@@ -441,7 +439,6 @@ int isNumber (int pos)
       return 1; 
    return userinput[pos] == '-' && pos + 1 <= inputleng && userinput[pos+1] >= '0' && userinput[pos+1] <= '9'; 
    }
-	//You do this
 }// isNumber
 
 /* parseVal - return number starting at userinput[pos]   */
@@ -465,7 +462,6 @@ NUMBER parseVal()
    }
    pos = skipblanks(pos); 
    return sign * value; 
-  //You do this
 }// parseVal
 
 EXPLIST parseEL();
@@ -519,7 +515,6 @@ NAMELIST parseNL()
       last = node; 
     }
     return nl;
- //You do this DONE
 }// parseNL
 
 /* parseDef - parse function definition at userinput[pos]   */
@@ -529,7 +524,6 @@ NAME parseDef()
     NAME fname;        // function name
     NAMELIST nl;       // formal parameters
     EXP e;             // body
-   //You do this
    // skip blanks, skip ( define 
    pos = skipblanks(pos + 1); // skip the outer (
    if (!matches(pos, 6, (char*)"define")) { 
