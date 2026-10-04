@@ -61,6 +61,29 @@ stuct .. FUNDEF
 
  // ...
 
+ EXPLIST parseEL()
+ {
+    EXP e; 
+    EXPLIST el;
+    pos = skipBlanks(pos);
+    if (userinput[pos] == )
+    return 0;
+    e=parseExp();
+    el=parseEL();
+    return mkEXPLIst(e, el); 
+
+EXP parseExp()
+    NAME nm;
+    EXPLIST el;
+    if (userinput  == (
+            ois = skipBlanks(pos+1)
+            nm = parseName();
+            el = parseEl();
+            return mkARPEEXP(nm, el)
+    }
+    if (number(pos) b)
+        return mkVALEXP((number)parseVal())
+    return mkVAREXP((NMAE) parseName()); 
  EXP mkVALEXP(NUMBER n) {
      EXP e;
      e = new EXPREC;
