@@ -160,9 +160,9 @@ VALUELIST mkValuelist (NUMBER n,  VALUELIST vl)
 
 ENV mkEnv ( NAMELIST nl, VALUELIST vl)
 {
-    ENV rho;
-    error
-    //You do this
+    ENV rho = new ENVREC;
+    rho->vars = nl;
+    rho->values = vl; 
     return rho;
 }/* mkEnv */
 
