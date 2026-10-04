@@ -119,10 +119,11 @@ EXP mkVAREXP ( NAME nm)
 
 EXP mkAPEXP (NAME op, EXPLIST el)
 {
-   EXP  e;
-   error
-  //You do this
-   return e;
+   EXP e = new EXPREC;
+   e->etype = APEXP;
+   e->optr = op;
+   e->args = el; 
+   return e; 
 }/* mkAPEXP */
 
 /* mkExplist - return an EXPLIST with head e and tail el         */
@@ -130,7 +131,7 @@ EXP mkAPEXP (NAME op, EXPLIST el)
 EXPLIST mkExplist (EXP e, EXPLIST el)
 {
     EXPLIST newel;
-    error
+    e->
    //You do this
     return newel;
 }/* mkExplist */
