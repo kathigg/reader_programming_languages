@@ -438,7 +438,18 @@ int isNumber (int pos)
 
 NUMBER parseVal()
 {
-   error
+   VALEXP val; 
+   EXPLIST el; 
+   char sign = '+';
+   if (userinput[pos] == '-'){ 
+      sign = '-';
+   }
+   { 
+      pos = skipblanks(pos);
+      if (isNumber(pos)) {
+         
+
+
   //You do this
 }// parseVal
 
@@ -485,7 +496,7 @@ NAMELIST parseNL()
 {
     NAMELIST nl = nullptr; 
     NAMELISTREC* last = nullptr; 
-    for (int i = 0; userinput[i] != ';'; i++) {
+    while (userinput[pos] != ')'){ 
       NAME nm = parseName(); // returning the name's symbol-table location 
       NAMELISTREC* node = new NAMELISTREC{nm, nullptr};
       if (nl == nullptr) nl = node; // happens for the first node
@@ -505,21 +516,36 @@ NAME parseDef()
     EXP e;             // body
    //You do this
    // skip blanks, skip ( define 
+   pos = skipblanks(pos + 1); // skip the outer (
+   if (!matches(pos, 6, (char*)"define")) { 
+      cout << "Error: expected define, instead read: " << userinput[pos] << endl; 
+      exit(1); 
+   }
+   pos = skipblanks(pos + 6); // skip define and blanks
     // then you get the name fname 
-    int fname = parseName();
+    NAME fname = parseName();
     // then you skip blanks again, skip the left
     // parenthesis, grab the function 
     // get nl by calling parseNL
     NAMELIST nl = parseNL(); 
     // then you parse the expression, skip blanks, get e
-    EXP e = parseExp(); 
-    // make sure you put it in the linkedlist of functions using newfundef or whatever 
-    // jump over the right parentheses ')' 
+    if (userinput[pos] != '(') {
+      cout << "Error: expected '(' before the argument list, instead read: " << userinput[pos] << endl;
+      exit(1);
+    }
+    pos = skipblanks(pos+1); // skip ( before the arguments
+    NAMELIST args = parseNL();
+    EXP body = parseExp(); 
+    if (userinput[pos] != ')') {
+      cout << "Error: expected ')' to end the definition, but instead read: " << userinput[pos] << endl;
+      exit(1); 
+    }
+    pos = skipblanks(pos+1); // skipping the outer ')'
+    newFunDef(fname, args, body); 
     // parsing means the entire function has to be consumed. 
     return (fname); 
 
    int functionNameLocation = parseName(); 
-   error
    return ( fname);
 }// parseDef
 
