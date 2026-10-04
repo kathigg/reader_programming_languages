@@ -1,5 +1,6 @@
 
 #include<iostream>
+#include<limits.h>
 #include<string.h>
 #include<stdlib.h>
 #include<stdio.h>
@@ -258,6 +259,11 @@ NAME install ( char* nm)
    }
    if (i > numNames)
    {
+	  if (i >= MAXNAMES)
+	  {
+	     cout << "Error: symbol table is full" << endl;
+	     exit(1);
+	  }
 	  numNames = i;
 	  printNames[i] = new char[strlen(nm) + 1];
 	  strcpy(printNames[i], nm);
@@ -297,6 +303,8 @@ int skipblanks (int p)
 
 int matches (int s, int leng,  char* nm)
 {
+   if (s < 0 || s + leng > inputleng + 1)
+      return 0;
    int i=0;
    while (i < leng )
    {
@@ -314,14 +322,17 @@ int matches (int s, int leng,  char* nm)
 
 /* nextchar - read next char - filter tabs and comments */
 
-void nextchar (char& c)
+bool nextchar (char& c)
 {
-    scanf("%c", &c);
+    if (scanf("%c", &c) != 1)
+       return false;
     if (c == COMMENTCHAR )
     {
 	  while ( c != '\n' )
-		scanf("%c",&c);
+		if (scanf("%c",&c) != 1)
+		   return false;
     }
+    return true;
 }
 
 
@@ -329,14 +340,18 @@ void nextchar (char& c)
 void readParens()
 {
    int parencnt; /* current depth of parentheses */
-   char c;
+   char c = '\0';
    parencnt = 1; // '(' just read
    do
    {
 	  if (c == '\n')
 	    cout <<PROMPT2;
 	  cout.flush();
-	  nextchar(c);
+	  if (!nextchar(c))
+	  {
+	     cout << "Error: expected ')' before end of input" << endl;
+	     exit(1);
+	  }
 	  pos++;
 	  if (pos == MAXINPUT )
 	  {
@@ -357,7 +372,7 @@ void readParens()
 
 /* readInput - read char's into userinput */
 
-void readInput()
+bool readInput()
 {
     char  c;
     cout << PROMPT;
@@ -365,13 +380,18 @@ void readInput()
     pos = -1;
     do
 	 {
+	    if (!nextchar(c))
+	    {
+	       if (pos == -1)
+	          return false;
+	       c = '\n';
+	    }
 	    ++pos ;
-	    if (pos == MAXINPUT )
+	    if (pos >= MAXINPUT - 1)
 	    {
 		    cout << "User input too long\n";
 		    exit(1);
 	    }
-	    nextchar(c);
 	    if (c == '\n' )
 		   userinput[pos] = ' ';
 	    else
@@ -382,31 +402,38 @@ void readInput()
 	while (c != '\n');
 	inputleng = pos;
 	userinput[pos+1] = COMMENTCHAR; // sentinel
+   return true;
 }
 
 
 /* reader - read char's into userinput; be sure input not blank  */
 
-void reader ()
+bool reader ()
 {
     do
     {
-	  readInput();
+	  if (!readInput())
+	     return false;
 	  pos = skipblanks(0);
     }
     while( pos > inputleng); // ignore blank lines
+    return true;
 }
 
 /* parseName - return (installed) NAME starting at userinput[pos]*/
 
 NAME parseName()
 {
-   char nm[20]; // array to accumulate characters
+   char nm[NAMELENG + 1]; // array to accumulate characters
    int leng; // length of name
    leng = 0;
    while ( (pos <= inputleng) && !isDelim(userinput[pos]) )
    {
-	    
+	    if (leng == NAMELENG)
+	    {
+	       cout << "Error: name is too long" << endl;
+	       exit(1);
+	    }
 	    nm[leng] = userinput[pos];
 	    ++pos;
 	    ++leng;
@@ -424,21 +451,18 @@ NAME parseName()
 
 /* isDigits - check if sequence of digits begins at pos   */
 
-int isDigits (int pos)
+int isDigits (int p)
 {
-   
+   return p <= inputleng && userinput[p] >= '0' && userinput[p] <= '9';
 }// isDigits
 
 
 /* isNumber - check if a number begins at pos  */
 
-int isNumber (int pos)
+int isNumber (int p)
 {
-   if (pos > inputleng) return 0;
-   if (userinput[pos] >= '0' && userinput[pos] <= '9') {
-      return 1; 
-   return userinput[pos] == '-' && pos + 1 <= inputleng && userinput[pos+1] >= '0' && userinput[pos+1] <= '9'; 
-   }
+   return isDigits(p) ||
+          (p <= inputleng && userinput[p] == '-' && isDigits(p + 1));
 }// isNumber
 
 /* parseVal - return number starting at userinput[pos]   */
@@ -446,22 +470,32 @@ int isNumber (int pos)
 NUMBER parseVal()
 {
    int sign = 1;
-   NUMBER value = 0; 
-   if (userinput[pos] == '-'){ 
+   long long value = 0;
+   if (userinput[pos] == '-'){
       sign = -1;
       ++pos;
    }
-   if (pos > inputleng || userinput[pos] < '0' || 
+   if (pos > inputleng || userinput[pos] < '0' ||
       userinput[pos] > '9') {
          cout << "Error: expected digits in number, instead read : " << userinput[pos] << endl;
          exit(1); 
    }
+   long long limit = sign < 0 ? -static_cast<long long>(INT_MIN) : INT_MAX;
    while (pos <= inputleng && userinput[pos] >= '0' && userinput[pos] <= '9') {
-      value = value * 10 + (userinput[pos] - '0');
+      int digit = userinput[pos] - '0';
+      if (value > (limit - digit) / 10) {
+         cout << "Error: number is out of range" << endl;
+         exit(1);
+      }
+      value = value * 10 + digit;
       ++pos; 
    }
+   if (!isDelim(userinput[pos])) {
+      cout << "Error: invalid character after number: " << userinput[pos] << endl;
+      exit(1);
+   }
    pos = skipblanks(pos); 
-   return sign * value; 
+   return static_cast<NUMBER>(sign * value);
 }// parseVal
 
 EXPLIST parseEL();
@@ -507,13 +541,18 @@ NAMELIST parseNL()
 {
     NAMELIST nl = nullptr; 
     NAMELISTREC* last = nullptr; 
-    while (userinput[pos] != ')'){ 
+    while (pos <= inputleng && userinput[pos] != ')'){
       NAME nm = parseName(); // returning the name's symbol-table location 
       NAMELISTREC* node = new NAMELISTREC{nm, nullptr};
       if (nl == nullptr) nl = node; // happens for the first node
       else last->tail = node; 
       last = node; 
     }
+    if (pos > inputleng) {
+       cout << "Error: expected ')' after argument list" << endl;
+       exit(1);
+    }
+    pos = skipblanks(pos + 1);
     return nl;
 }// parseNL
 
@@ -521,41 +560,34 @@ NAMELIST parseNL()
 
 NAME parseDef()
 {
-    NAME fname;        // function name
-    NAMELIST nl;       // formal parameters
-    EXP e;             // body
-   // skip blanks, skip ( define 
-   pos = skipblanks(pos + 1); // skip the outer (
-   if (!matches(pos, 6, (char*)"define")) { 
+   NAME fname;
+   NAMELIST nl;
+   EXP e;
+   if (userinput[pos] != '(') {
+      cout << "Error: expected '(' before definition" << endl;
+      exit(1);
+   }
+   pos = skipblanks(pos + 1);
+   if (!matches(pos, 6, (char*)"define")) {
       cout << "Error: expected define, instead read: " << userinput[pos] << endl; 
       exit(1); 
    }
-   pos = skipblanks(pos + 6); // skip define and blanks
-    // then you get the name fname 
-    NAME fname = parseName();
-    // then you skip blanks again, skip the left
-    // parenthesis, grab the function 
-    // get nl by calling parseNL
-    NAMELIST nl = parseNL(); 
-    // then you parse the expression, skip blanks, get e
-    if (userinput[pos] != '(') {
+   pos = skipblanks(pos + 6);
+   fname = parseName();
+   if (userinput[pos] != '(') {
       cout << "Error: expected '(' before the argument list, instead read: " << userinput[pos] << endl;
       exit(1);
-    }
-    pos = skipblanks(pos+1); // skip ( before the arguments
-    NAMELIST args = parseNL();
-    EXP body = parseExp(); 
-    if (userinput[pos] != ')') {
+   }
+   pos = skipblanks(pos + 1);
+   nl = parseNL();
+   e = parseExp();
+   if (userinput[pos] != ')') {
       cout << "Error: expected ')' to end the definition, but instead read: " << userinput[pos] << endl;
       exit(1); 
-    }
-    pos = skipblanks(pos+1); // skipping the outer ')'
-    newFunDef(fname, args, body); 
-    // parsing means the entire function has to be consumed. 
-    return (fname); 
-
-   int functionNameLocation = parseName(); 
-   return ( fname);
+   }
+   pos = skipblanks(pos + 1);
+   newFunDef(fname, nl, e);
+   return fname;
 }// parseDef
 
 /*****************************************************************
@@ -583,7 +615,8 @@ int main()
    while (!quittingtime)
    {
    	
-	 reader();
+	 if (!reader())
+	    break;
 	 if ( matches(pos, 4, (char* )"quit"))
 	    quittingtime = 1;
 	 else if( (userinput[pos] == '(') &&
@@ -597,6 +630,11 @@ int main()
 			//prValue(eval(currentExp, emptyEnv() ));
 			cout <<endl<<endl;
 		 }
+	 if (!quittingtime && pos <= inputleng)
+	 {
+	    cout << "Error: unexpected input after expression: " << userinput[pos] << endl;
+	    exit(1);
+	 }
 	}// while
     return 0;
 }
