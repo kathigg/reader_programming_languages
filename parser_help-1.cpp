@@ -438,7 +438,7 @@ int isNumber (int pos)
    if (pos > inputleng) return 0;
    if (userinput[pos] >= '0' && userinput[pos] <= '9') {
       return 1; 
-   return userinput[pos] == '-' && p + 1 <= inputleng && userinput[p+1] >= '0' && userinput[p+1] <= '9'; 
+   return userinput[pos] == '-' && pos + 1 <= inputleng && userinput[pos+1] >= '0' && userinput[pos+1] <= '9'; 
    }
 	//You do this
 }// isNumber
