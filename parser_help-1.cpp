@@ -182,10 +182,12 @@ int lengthVL ( VALUELIST vl)
 
 int lengthNL ( NAMELIST nl)
 {
-   int i = 0;
-   error
-  //You do this
-   return i;
+   int count = 0;
+   while (nl != nullptr) {
+      ++count; 
+      nl = nl->tail; 
+   }
+   return count; 
 }/* lengthNL */
 
 /*****************************************************************
@@ -196,9 +198,12 @@ int lengthNL ( NAMELIST nl)
 
 FUNDEF fetchFun ( NAME fname)
 {
-   FUNDEF  f;
-   f = fundefs;
-   error
+   FUNDEF  f = fundefs; 
+   while (f != nullptr) {
+      if (f->funname == fname) return f; 
+      f = f->nextfundef;
+   }
+   return nullptr; // returns nullptr if no definition has the name
  //You do this
 }/* fetchFun */
 
