@@ -430,10 +430,10 @@ int isDigits (int pos)
 
 int isNumber (int pos)
 {
-   if (p > inputleng
-   if (userinput[pos] >= '0' and userinput[pos] >= '0') {
+   if (pos > inputleng) return 0;
+   if (userinput[pos] >= '0' && userinput[pos] <= '9') {
       return 1; 
-   return 0; 
+   return userinput[pos] == '-' && p + 1 <= inputleng && userinput[p+1] >= '0' && userinput[p+1] <= '9'; 
    }
 	//You do this
 }// isNumber
@@ -445,7 +445,7 @@ NUMBER parseVal()
    int sign = 1;
    NUMBER value = 0; 
    if (userinput[pos] == '-'){ 
-      sign = '-1';
+      sign = -1;
       ++pos;
    }
    if (pos > inputleng || userinput[pos] < '0' || 
@@ -459,11 +459,6 @@ NUMBER parseVal()
    }
    pos = skipblanks(pos); 
    return sign * value; 
-}
-
-
-
-
   //You do this
 }// parseVal
 
