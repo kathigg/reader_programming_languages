@@ -130,9 +130,9 @@ EXP mkAPEXP (NAME op, EXPLIST el)
 
 EXPLIST mkExplist (EXP e, EXPLIST el)
 {
-    EXPLIST newel;
-    e->
-   //You do this
+    EXPLIST newel = new EXPLISTREC;
+    newel->head = e;
+    newel->tail = el;
     return newel;
 }/* mkExplist */
 
