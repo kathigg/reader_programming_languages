@@ -136,13 +136,13 @@ EXPLIST mkExplist (EXP e, EXPLIST el)
     return newel;
 }/* mkExplist */
 
-/* mkNamelist - return a NAMELIST with head n and tail nl        */
+/* mkNamelist - return a NAMELIST with head nm and tail nl        */
 
 NAMELIST mkNamelist ( NAME nm, NAMELIST nl)
 {
-   NAMELIST newnl;
-   error
-  //You do this
+   NAMELIST newnl = new NAMELISTREC; 
+   newnl->head = nm;
+   newnl->tail = nl;
    return newnl;
 }/* mkNamelist */
 
@@ -150,9 +150,9 @@ NAMELIST mkNamelist ( NAME nm, NAMELIST nl)
 
 VALUELIST mkValuelist (NUMBER n,  VALUELIST vl)
 {
-   VALUELIST newvl;
-   error
-  //You do this
+   VALUELIST newvl = new VALUELISTREC;
+   newvl->head = n;
+   newvl->tail = vl; 
    return newvl;
 }/* mkValuelist */
 
