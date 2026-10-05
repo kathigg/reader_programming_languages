@@ -597,12 +597,41 @@ NAME parseDef()
    return fname;
 }// parseDef
 
+// NOT SURE WHERE THIS GOES 
+/*
+NUMBER applyCtrlOp(int op, EXPLIST args, ENV rho) {
+NUMBER n = 0; 
+if (op == 0) {
+// do this
+} 
+if (op==1) {
+// do this
+}
+if (op == 2) { // block
+// do this 
+// in a bllock, recursively comput and return the last value. while loop: compute if something is true, then execute the same thing, keep jumping through. 
+// if, you check first block, if it's true, do second block ... other gibberish 
+   while(args != 0) { // means you are not at the end, the last guy will be n 
+      n = eval(args->head, rho);
+      args = args->tail; 
+} return n; 
+
+
+return n; // keeping this just so it doesn't complain 
+}
 /* 
 NUMBER eval (EXP e, ENV rho) 
 { 
 switch (e->etype) {
 case VALEXP: return (e->num);
 vase VAREXP:// do this --- if it's not local, look up global, if it's not global than crash.
+{
+   NAME x = e->varble; 
+   // check to see 
+   if (isBound(x, rho)) 
+   return (fetch(x, rho);
+   if (isBound(x, global)) ...
+}
 case APEXP: if (e->optr > numBuiltIns) 
    return applyUserFun(e->optr, evalList(e->args, rho)); 
    else { 
@@ -612,6 +641,7 @@ case APEXP: if (e->optr > numBuiltIns)
    // evalList goes and evaluates each item in the list and makes a linkedlist, 
    // and gives you a pointer to it. It evaluates this recursively. It calls eval recursively, and it calls it back, and vice versa. 
    // function looks like (f 3 4 5) (as written on the board, a bit haphazardly) 
+
 }
 } 
 return 0; 
