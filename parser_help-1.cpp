@@ -621,7 +621,8 @@ int main()
    quittingtime = 0;
    while (!quittingtime)
    {
-   	
+      
+
 	 if (!reader())
 	    break;
 	 if ( matches(pos, 4, (char* )"quit"))
@@ -634,7 +635,7 @@ int main()
 	 }
 	 else {
 			currentExp = parseExp();
-			//prValue(eval(currentExp, emptyEnv() ));
+			// prValue(eval(currentExp, emptyEnv() )); // UNCOMMENTED IN MAHE CODE
 			cout <<endl<<endl;
 		 }
 	 if (!quittingtime && pos <= inputleng)
