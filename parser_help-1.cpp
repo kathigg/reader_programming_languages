@@ -671,11 +671,22 @@ NUMBER applyValueOp(int o, VALUELIST vl) {
  * return 0; 
  * h = eval(el->head, rho); 
  * t = evalList(el-> tail, rho); 
+ * return mkValueList(n, t); 
  * 
  * // applyUserFun == look up definition of nm and apply to actuals 
- * NUMBER applyUserFun(NAME nm, VALUELIST actuals) {
+ * NUMBER applyUserFun(NAME nm, VALUELIST actuals) { 
  * FUNDEF f;
- * ENV rho;  
+ * ENV rho;  // making a new environment, a new local environment 
+ * f = fetchFun(nm); // gives us a pointer to wherever the function is 
+ * rho = mkEnv(f->formals, actuals);
+ * return eval(f->body, rho);  
+ * // all we are doing is setting up a local environment, and then looking at the global. 
+ * // here's where the control operators....
+ * }
+ * 
+ * 
+ * // do this 
+ * } // applyUserFun 
 
 /*****************************************************************
  *                     READ-EVAL-PRINT LOOP                      *
