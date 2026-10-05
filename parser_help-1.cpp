@@ -231,18 +231,18 @@ void initNames()
 {
    int i =0;
    fundefs = 0;
-   printNames[i] = (char* )"loop";   i++;
-   printNames[i] = (char* )"if";      i++;
-   printNames[i] = (char* )"block";    i++;
-   printNames[i] = (char*)"set";      i++;
-   printNames[i] = (char* )"+";       i++;
-   printNames[i] = (char* )"-";       i++;
-   printNames[i] = (char* ) "*";       i++;
-   printNames[i] = (char* )"/";       i++;
-   printNames[i] = (char* )"=";       i++;
-   printNames[i] = (char* )"<";       i++;
-   printNames[i] = (char* )">";       i++;
-   printNames[i] = (char* )"print";
+   printNames[i] = (char* )"loop";   i++; //0
+   printNames[i] = (char* )"if";      i++; //1
+   printNames[i] = (char* )"block";    i++; //2
+   printNames[i] = (char*)"set";      i++; //3
+   printNames[i] = (char* )"+";       i++; //4
+   printNames[i] = (char* )"-";       i++; //5
+   printNames[i] = (char* ) "*";       i++; //6
+   printNames[i] = (char* )"/";       i++; //7
+   printNames[i] = (char* )"=";       i++; //8
+   printNames[i] = (char* )"<";       i++; //9
+   printNames[i] = (char* )">";       i++; //10
+   printNames[i] = (char* )"print"; // 11
    numNames = i;
    numBuiltins = i;
 }//initNames
@@ -596,6 +596,14 @@ NAME parseDef()
    // parsing means the entire function has to be consumed.
    return fname;
 }// parseDef
+
+/* 
+NUMBER eval (EXP e, ENV rho) 
+{ 
+switch (e->etype) {
+case VALEXP: return (e->num);
+vase VAREXP:// do this --- if it's not local, look up global, if it's not global than crash.
+case APEXP: if (e->optr > numBuiltIns) 
 
 /*****************************************************************
  *                     ENVIRONMENTS                              *
