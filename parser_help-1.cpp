@@ -604,6 +604,18 @@ switch (e->etype) {
 case VALEXP: return (e->num);
 vase VAREXP:// do this --- if it's not local, look up global, if it's not global than crash.
 case APEXP: if (e->optr > numBuiltIns) 
+   return applyUserFun(e->optr, evalList(e->args, rho)); 
+   else { 
+   if (e->optr<4) 
+   return applyCtrolOp(e->optr, e->args, rho); 
+   return applyValueOp(e->optr, evalList(e->args, rho));  
+   // evalList goes and evaluates each item in the list and makes a linkedlist, 
+   // and gives you a pointer to it. It evaluates this recursively. It calls eval recursively, and it calls it back, and vice versa. 
+   // function looks like (f 3 4 5) (as written on the board, a bit haphazardly) 
+}
+} 
+return 0; 
+} // eval 
 
 /*****************************************************************
  *                     ENVIRONMENTS                              *
@@ -615,6 +627,55 @@ ENV emptyEnv()
 {
    return  mkEnv(0, 0);
 }
+/*
+/* bindVar - bind variable nm to value n in environment rho */ 
+/* 
+void bindVar(NAME n,, NUMBER n, ENV rho)  {
+rho->vars = mkNameList(nm, rho->vars); //mkNameList make s node, initializes nm at the start of the linkedlist
+rho->values = mkValueList(n, rho->values);
+}
+// findVar -- look up 
+VALUELIST findVar(NAME nm, ENV rho) {}
+
+void assign (NAME nm, NUMBER n, ENV rho) {
+VALUELIST varloc; as soon as you find its value you change its value to n. 
+}
+// fetch returns number
+NUMBER fetch (NAME nm, ENV rho) { // you return a number 
+VALUELIST vl; 
+}
+
+// isBound -- check if nm is bound in rho, returns a true/false boolean 
+int isBound(NAME nm, ENV rho) {} 
+*/
+
+/*******NUMBERS*********/
+// prValue - print number n 
+void prValue (NUMBER n) {
+   cout << n;
+} // pr value 
+int isTrueVal(NUMBER n){
+   return (n!=0); 
+} // is true vale
+
+NUMBER applyValueOp(int o, VALUELIST vl) {
+   NUMBER n, n1, n2;
+   // more stuff 
+}
+/********EVALUATION
+ * NUMBER eval (Exp e, ENV rho); 
+ * VALUELIST evalList(EXPLIST el; ENV rho) {
+ * NUMBER h; // the head. how do you compute the head? 
+ * VALUELIST t; 
+ * if (el == 0) 
+ * return 0; 
+ * h = eval(el->head, rho); 
+ * t = evalList(el-> tail, rho); 
+ * 
+ * // applyUserFun == look up definition of nm and apply to actuals 
+ * NUMBER applyUserFun(NAME nm, VALUELIST actuals) {
+ * FUNDEF f;
+ * ENV rho;  
 
 /*****************************************************************
  *                     READ-EVAL-PRINT LOOP                      *
